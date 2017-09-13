@@ -11,21 +11,18 @@ Under the hood this uses the amazing graph tooling by [Anvaka](http://github.com
 
 # Requirements
 
-Some dot graph
-
-Docker
-
-Browser
-
-Open ports 8000 and 8081
+* Some dot graph
+* Docker
+* Browser
+* Open ports 8000 and 8081
 
 # How to run
 
 Simple way (assuming `~/.bin` is already in your path):
 ```
-$ ln -s $PWD/dotvis ~/.bin/dotvis
 $ git clone github.com/shaded-enmity/dotvis
 $ cd dotvis
+$ ln -s $PWD/dotvis ~/.bin/dotvis
 $ dotvis examples/test.dot test
 Serving ... now access your graph at http://localhost:8081/#/galaxy/test
 ```
