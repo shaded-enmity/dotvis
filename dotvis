@@ -1,0 +1,40 @@
+#!/usr/bin/bash
+
+# Do not copy this file around, rather symlink from the repository checkout
+# so that we don't have to pivot context dir via parameters, env, or special
+# files
+#
+# Note generally the interaction with Docker could be done in more robust and better
+# way, but I couldn't be bothered right now and this simply works fine 
+context_dir=$(dirname $(readlink -f $0))
+
+# Rebuild docker image
+build() {
+        opwd=$(pwd)
+        cd $context_dir
+        docker build -t dotvis .
+        cd $opwd
+}
+
+if [[ "$1" = "rebuild-image" ]]; then
+        build
+        exit $?
+fi
+
+if ! docker images | grep dotvis >/dev/null 2>&1 ; then
+        build
+fi
+
+if docker ps | grep dotvis >/dev/null 2>&1 ; then
+        echo -n "Dotvis container already running, kill? [Y/n]: " ; read $YoN
+        if [[ "$YoN" = "" || "$YoN" = "y" || "$YoN" = "Y" ]]; then
+                docker kill $(docker ps | grep dotvis | cut -d' ' -f1)
+        else 
+                exit 0
+        fi     
+fi
+
+file=$1
+name=$2
+
+cat $file | docker run -i -p 8000:8000 -p 8081:8081 dotvis $name
