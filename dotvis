@@ -40,7 +40,7 @@ if [[ "$1" = "--help" ]]; then
         exit 0
 fi
 
-if [[ $@ -lt 2 ]]; then
+if [[ "$#" -lt "2" ]]; then
         synopsis
         exit 1
 fi
