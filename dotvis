@@ -8,7 +8,6 @@
 # way, but I couldn't be bothered right now and this simply works fine 
 context_dir=$(dirname $(readlink -f $0))
 
-# Rebuild docker image
 build() {
         opwd=$(pwd)
         cd $context_dir
@@ -16,10 +15,36 @@ build() {
         cd $opwd
 }
 
+synopsis() {
+        echo "dotvis script v0.1"
+        echo ""
+        echo "Usage: dotvis [--help] [rebuild-image] | [dot-file] [name]"
+        echo ""
+        echo "Rebuilding image:"
+        echo "    dotvis rebuild-image"
+        echo ""
+        echo "Running:"
+        echo "    dotvis dot-file.dot mygraph"
+        echo ""
+        echo "Dotvis requires ports 8000 and 8081 to be free"
+}
+
+
 if [[ "$1" = "rebuild-image" ]]; then
         build
         exit $?
 fi
+
+if [[ "$1" = "--help" ]]; then
+        synopsis
+        exit 0
+fi
+
+if [[ $@ -lt 2 ]]; then
+        synopsis
+        exit 1
+fi
+
 
 if ! docker images | grep dotvis >/dev/null 2>&1 ; then
         build
