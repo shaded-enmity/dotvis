@@ -62,4 +62,4 @@ fi
 file=$1
 name=$2
 
-cat $file | docker run -i -p 8000:8000 -p 8081:8081 dotvis $name
+cat $file | docker run -e DOTVIS_SERVE_HOST=10.8.244.150 -i -p 8000:8000 -p 8081:8081 dotvis $name
